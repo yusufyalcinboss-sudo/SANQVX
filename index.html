@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#080d18">
+    <meta name="description" content="A local-first Luau workspace for Roblox Studio projects.">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+    <title>SANQVX EXECUTOR — Studio Workspace</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="brand" data-action="home" aria-label="SANQVX home">
+          <span class="brand-mark">S</span>
+          <span><strong>SANQVX</strong><small>EXECUTOR <i>·</i> STUDIO WORKSPACE</small></span>
+        </button>
+        <div class="project-switch">
+          <span class="live-dot"></span>
+          <select id="project-select" aria-label="Current project"></select>
+          <button class="icon-button" data-action="new-project" title="New project" aria-label="New project">+</button>
+        </div>
+        <div class="top-actions">
+          <button class="quiet-button" data-action="backup">Backup</button>
+          <button class="icon-button" data-action="settings" title="Settings" aria-label="Settings">⚙</button>
+          <button class="install-button" id="install-button" hidden>Install app</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="sidebar">
+          <div class="sidebar-heading">
+            <div><span class="eyebrow">YOUR WORKSPACE</span><h2>Script Hub</h2></div>
+            <button class="icon-button accent-icon" data-action="new-script" title="New script" aria-label="New script">+</button>
+          </div>
+          <label class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search scripts & code" autocomplete="off"></label>
+          <div class="category-row" id="categories">
+            <button class="category active" data-category="All">All <span id="script-count">0</span></button>
+            <button class="category" data-category="Favorites">★</button>
+            <button class="category" data-category="Saved">Saved</button>
+          </div>
+          <div class="section-caption"><span>PROJECT SCRIPTS</span><button data-action="import" class="text-button">Import</button></div>
+          <div class="script-list" id="script-list"></div>
+          <div class="sidebar-footer">
+            <span class="local-badge"><span></span> LOCAL · ON THIS DEVICE</span>
+            <p>Scripts stay in this browser. Export a backup to move them to another device.</p>
+          </div>
+        </aside>
+
+        <section class="editor-column">
+          <div class="editor-toolbar">
+            <div class="breadcrumbs"><span id="crumb-project">My Project</span><b>/</b><strong id="crumb-script">Untitled</strong><span id="dirty-indicator" class="dirty-indicator"></span></div>
+            <div class="editor-actions">
+              <button class="tool-button" data-action="undo" title="Undo (Ctrl+Z)">↶<span>Undo</span></button>
+              <button class="tool-button" data-action="redo" title="Redo (Ctrl+Y)">↷<span>Redo</span></button>
+              <span class="toolbar-divider"></span>
+              <button class="tool-button" data-action="versions" title="Version history">◷<span>History</span></button>
+              <button class="tool-button" data-action="scan" title="Scan script">⌕<span>Scan</span></button>
+              <button class="primary-button" data-action="save">Save <kbd>Ctrl S</kbd></button>
+              <button class="tool-button test-button" data-action="run" title="Save this script and open the Roblox Studio run guide">Run as a script</button>
+              <button class="more-button" data-action="more" aria-label="More actions">···</button>
+            </div>
+          </div>
+          <div class="tabs" id="tabs"></div>
+          <div class="editor-wrap">
+            <div class="line-numbers" id="line-numbers" aria-hidden="true">1</div>
+            <div class="code-stage">
+              <pre class="highlight-layer" id="highlight-layer" aria-hidden="true"></pre>
+              <textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Luau code editor" placeholder="-- Select a script or create a new one to get started."></textarea>
+              <div class="empty-state" id="empty-state" hidden>
+                <div class="empty-glyph">⌘</div>
+                <h2>Your Studio workspace</h2>
+                <p>Create a script, import a Luau file, or start with a safe template.</p>
+                <button class="primary-button" data-action="new-script">Create your first script</button>
+              </div>
+            </div>
+          </div>
+          <footer class="statusbar">
+            <span id="status-message"><i class="status-dot"></i> Ready · Local workspace</span>
+            <span id="cursor-position">Ln 1, Col 1</span>
+            <span>Luau <span class="status-divider">·</span> UTF-8</span>
+          </footer>
+        </section>
+
+        <aside class="inspector">
+          <div class="inspector-head"><span class="eyebrow">SANQVX TOOLKIT</span><span class="online-label"><i></i> LOCAL MODE</span></div>
+          <section class="tool-card vision-card">
+            <div class="card-title"><span class="card-icon">◈</span><h3>Project Vision</h3></div>
+            <p class="card-description">A quick map of scripts in this project.</p>
+            <div id="vision-tree" class="vision-tree"></div>
+          </section>
+          <section class="tool-card assistant-card">
+            <div class="card-title"><span class="card-icon sparkle">✳</span><h3>Studio Assistant</h3><span class="offline-tag">OFFLINE</span></div>
+            <p class="card-description">Local code notes and templates. No code is sent to a service.</p>
+            <div class="assistant-buttons">
+              <button data-action="explain">Explain code</button>
+              <button data-action="build">UI template</button>
+              <button data-action="optimize">Review</button>
+            </div>
+            <div id="assistant-output" class="assistant-output" aria-live="polite">Select code and choose a tool to get started.</div>
+          </section>
+          <section class="tool-card health-card">
+            <div class="card-title"><span class="card-icon health-icon">⌁</span><h3>Project Health</h3></div>
+            <div class="health-meter"><span id="health-value"></span></div>
+            <div class="health-meta"><span id="health-label">No scan yet</span><button data-action="scan" class="text-button">Scan now</button></div>
+            <div id="health-findings" class="health-findings"></div>
+          </section>
+          <section class="studio-note">
+            <span>◉</span><p><strong>Studio runs your code.</strong> Export or save your script, then test it with Roblox Studio's own Play controls.</p>
+          </section>
+        </aside>
+      </main>
+      <input id="file-input" type="file" accept=".lua,.luau,.txt,.json,application/json,text/plain" hidden>
+      <input id="backup-input" type="file" accept=".json,application/json" hidden>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <dialog id="modal" class="modal"><div id="modal-content"></div></dialog>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>
