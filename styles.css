@@ -25,6 +25,18 @@ button, input, select, textarea { font: inherit; }
 button { color: inherit; }
 button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .app-shell { min-height: 100vh; background: radial-gradient(ellipse at 62% -30%, #162a48 0, transparent 47%), var(--bg); }
+body:not(.authenticated) .app-shell { display: none; }
+.key-gate { min-height: 100vh; display: grid; place-items: center; padding: 20px; background: radial-gradient(ellipse at 50% 0, #162a48 0, transparent 55%), var(--bg); }
+.key-gate-card { width: min(360px, 100%); display: grid; justify-items: stretch; gap: 12px; padding: 28px; border: 1px solid #263852; border-radius: 12px; background: #0e1625; box-shadow: 0 20px 70px #0008; }
+.key-gate-card .brand-mark { justify-self: center; }
+.key-gate-card h1 { margin: 0; text-align: center; font: 700 17px 'Segoe UI', Arial, sans-serif; letter-spacing: .19em; }
+.key-gate-card p { margin: 0 0 6px; color: var(--muted); text-align: center; font-size: 12px; }
+.key-gate-card label { color: #a8b7cc; font-size: 11px; }
+.key-gate-card input { min-height: 38px; padding: 8px 10px; border: 1px solid #2a3c55; border-radius: 6px; background: #0a1321; color: var(--text); }
+.key-gate-card .primary-button { min-height: 36px; }
+.key-gate-status { min-height: 16px; color: var(--muted); text-align: center; font-size: 10px; line-height: 1.5; }
+.key-gate-status.error { color: var(--red); }
+body.authenticated .key-gate { display: none; }
 .topbar { height: 66px; padding: 0 22px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid #1b2b42; background: rgba(8,13,24,.92); }
 .brand { display: flex; align-items: center; gap: 11px; border: 0; padding: 0; background: none; text-align: left; cursor: pointer; }
 .brand-mark { width: 35px; height: 35px; display: grid; place-items: center; border: 1px solid #3c96ee; border-radius: 10px; color: #b6e2ff; background: linear-gradient(140deg, #1766a8, #121a37 72%); font: 700 22px 'Space Grotesk', sans-serif; box-shadow: 0 0 19px #248ee344, inset 0 0 10px #52a9ff22; }

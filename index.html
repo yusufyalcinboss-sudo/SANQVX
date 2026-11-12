@@ -11,6 +11,17 @@
     <title>SANQVX EXECUTOR — Studio Workspace</title>
   </head>
   <body>
+    <main class="key-gate" id="key-gate">
+      <form class="key-gate-card" id="key-form">
+        <div class="brand-mark" aria-hidden="true">S</div>
+        <h1>SANQVX</h1>
+        <p>Enter your access key to continue.</p>
+        <label for="access-key">Access key</label>
+        <input id="access-key" name="key" type="password" autocomplete="current-password" required>
+        <button class="primary-button" id="key-submit" type="submit">Submit key</button>
+        <div class="key-gate-status" id="key-status" role="status" aria-live="polite"></div>
+      </form>
+    </main>
     <div class="app-shell">
       <header class="topbar">
         <button class="brand" data-action="home" aria-label="SANQVX home">
@@ -117,6 +128,7 @@
       <div id="toast" class="toast" role="status" aria-live="polite"></div>
       <dialog id="modal" class="modal"><div id="modal-content"></div></dialog>
     </div>
+    <script src="./auth.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

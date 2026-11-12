@@ -1,0 +1,23 @@
+# Private filer
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# Desktop - unødvendige filer
+desktop/bin/
+desktop/obj/
+*.user
+
+# Midlertidige filer
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+dist/SANQVX.exe
+dist/SANQVX-GitHub-Pages.zip
+dist/Microsoft.Web.WebView2.Wpf.xml
+dist/Microsoft.Web.WebView2.Core.xml
+dist/Microsoft.Web.WebView2.WinForms.xml

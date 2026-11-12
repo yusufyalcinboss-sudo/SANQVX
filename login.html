@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080d18">
+    <meta name="robots" content="noindex, nofollow">
+    <title>SANQVX — Access</title>
+    <style>
+      :root { color-scheme: dark; font-family: "Segoe UI", Arial, sans-serif; color: #e5edf9; background: #080d18; }
+      * { box-sizing: border-box; }
+      body { min-width: 320px; min-height: 100vh; display: grid; place-items: center; margin: 0; padding: 20px; background: radial-gradient(ellipse at 50% 0, #17325a 0, transparent 53%), #080d18; }
+      .card { width: min(390px, 100%); padding: 32px; border: 1px solid #26476b; border-radius: 14px; background: linear-gradient(145deg, #101c30, #0b1423); box-shadow: 0 0 34px #1688ff20, 0 24px 80px #0009; }
+      .mark { width: 44px; height: 44px; display: grid; place-items: center; margin: 0 auto 17px; border: 1px solid #51b5ff; border-radius: 12px; background: linear-gradient(145deg, #155693, #111b35); color: #d3efff; font-size: 24px; font-weight: 700; box-shadow: 0 0 24px #239bff55; }
+      h1 { margin: 0; color: #f0f7ff; text-align: center; font-size: 19px; letter-spacing: .2em; }
+      .subtitle { margin: 9px 0 24px; color: #91a7c3; text-align: center; font-size: 12px; }
+      label { display: block; margin-bottom: 7px; color: #b7c9df; font-size: 11px; }
+      input { width: 100%; height: 42px; padding: 0 12px; border: 1px solid #304762; border-radius: 7px; outline: none; background: #08111f; color: #edf6ff; font: inherit; }
+      input:focus { border-color: #51adff; box-shadow: 0 0 0 3px #268eff24; }
+      button { width: 100%; min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: 15px; border: 1px solid #55b4ff; border-radius: 7px; background: linear-gradient(135deg, #238fea, #225bb5); color: white; font: 600 12px "Segoe UI", Arial, sans-serif; cursor: pointer; box-shadow: 0 5px 20px #138bff35; }
+      button:disabled { cursor: wait; opacity: .8; }
+      .spinner { width: 14px; height: 14px; border: 2px solid #ffffff66; border-top-color: white; border-radius: 50%; animation: spin .7s linear infinite; }
+      .spinner[hidden] { display: none; }
+      .status { min-height: 18px; margin: 13px 0 0; color: #8fa5c0; text-align: center; font-size: 11px; line-height: 1.5; }
+      .status.error { color: #ff8296; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 1.8s; } }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="mark" aria-hidden="true">S</div>
+      <h1>SANQVX</h1>
+      <p class="subtitle">Enter your access key to continue.</p>
+      <form id="login-form">
+        <label for="access-key">Access key</label>
+        <input id="access-key" name="key" type="password" autocomplete="current-password" required autofocus>
+        <button id="submit" type="submit"><span class="spinner" id="spinner" hidden></span><span id="button-label">Submit key</span></button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </form>
+    </main>
+    <script>
+      const form = document.querySelector("#login-form");
+      const input = document.querySelector("#access-key");
+      const submit = document.querySelector("#submit");
+      const spinner = document.querySelector("#spinner");
+      const buttonLabel = document.querySelector("#button-label");
+      const status = document.querySelector("#status");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        submit.disabled = true;
+        spinner.hidden = false;
+        buttonLabel.textContent = "Verifying...";
+        status.classList.remove("error");
+        status.textContent = "Checking access key...";
+        try {
+          const response = await fetch("/api/verify-key", {
+            method: "POST",
+            credentials: "same-origin",
+            cache: "no-store",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({key: input.value}),
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || result.authenticated !== true) {
+            status.classList.add("error");
+            status.textContent = result.error || (response.status === 401 ? "That key is not correct." : "Access could not be verified. Try again.");
+            return;
+          }
+          input.value = "";
+          window.location.replace("/");
+        } catch {
+          status.classList.add("error");
+          status.textContent = "Could not reach the access service. Check your connection and try again.";
+        } finally {
+          submit.disabled = false;
+          spinner.hidden = true;
+          buttonLabel.textContent = "Submit key";
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>SANQVX</AssemblyName>
+    <RootNamespace>SANQVX</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\index.html" LogicalName="Web.index.html" />
+    <EmbeddedResource Include="..\styles.css" LogicalName="Web.styles.css" />
+    <EmbeddedResource Include="..\auth.js" LogicalName="Web.auth.js" />
+    <EmbeddedResource Include="..\app.js" LogicalName="Web.app.js" />
+    <EmbeddedResource Include="..\sw.js" LogicalName="Web.sw.js" />
+    <EmbeddedResource Include="..\manifest.webmanifest" LogicalName="Web.manifest.webmanifest" />
+    <EmbeddedResource Include="..\icon.svg" LogicalName="Web.icon.svg" />
+  </ItemGroup>
+
+</Project>
